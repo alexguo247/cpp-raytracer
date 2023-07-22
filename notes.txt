@@ -1,0 +1,27 @@
+Sending Rays Into the Scene
+- Sends rays through pixels and computes the color seen in the direction of those rays
+    1. calculate the ray from the eye to the pixel
+    2. determine which objects the ray intersects
+    3. compute a color for that intersection point
+
+Ray-Sphere Intersection
+- If we have sphere centred at C = (Cx, Cy, Cz), we know that (x - Cx)^2 + (y - Cy) ^2 + (z - Cz)^2 = r^2
+- If we have a point P, then r = (P - C), so (P - C)^2 = (x - Cx)^2 + (y - Cy) ^2 + (z - Cz)^2
+    - i.e. any point P that satisfies (P - C) * (P - C) = r^2 is on the sphere
+- If our ray is P(t) = A + tb, then we look for any t where (P(t) - C) * (P(t) - C) = r^2
+- Expanding, we get t^2b * b + 2tb * (A - C) + (A - C) * (A - C) - r^2 = 0
+    - where b is the ray direction
+    - t is the ray parameter
+    - A is the ray origin
+    - C is the centre of the sphere
+    - r is the radius
+    - Quadratic --> 0 roots means it doesn't intersect, one root means it intersects along the border, two roots means it goes through
+- For objects that are rendered differently on each side, then we have to determine which side of the surface the ray comes from
+    - If the normals always point out:
+        - If the ray and the normal face the same direction, the ray is inside the object
+        - If they face opposite direction, then the ray is outside the object
+        - Determine this by taking the dot product of the two vectors --> if the dot is positive the ray is inside the sphere
+    - If the normals always point against the ray
+
+Terminology
+- focal length: distance between the projection plane and the projection point
