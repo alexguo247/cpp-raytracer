@@ -23,5 +23,9 @@ Ray-Sphere Intersection
         - Determine this by taking the dot product of the two vectors --> if the dot is positive the ray is inside the sphere
     - If the normals always point against the ray
 
+Antialiasing
+- Edge pixels are a blend of some foreground and some background --> no jagged edges
+- 
+ 
 Terminology
 - focal length: distance between the projection plane and the projection point
