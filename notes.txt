@@ -25,7 +25,60 @@ Ray-Sphere Intersection
 
 Antialiasing
 - Edge pixels are a blend of some foreground and some background --> no jagged edges
-- 
- 
+- For a given pixel, we have several samples within that pixel and send rays through each of the samples
+    - Then we average the colours of the rays
+
+Diffuse(Matte) Materials
+- Geometry and materials are separate
+- Simple material:
+    - Light that reflects off has its direction randomized
+    - Can also be absorbed rather than reflected
+    - There are two unit radius spheres tangent to the hit point P of a surface
+        - Center of (P + n) and (P - n) where n is the normal of the surface
+        - Select the tangent unit radius sphere that is on the same side of the surface as the ray origin
+        - Pick a random point S inside the unit radius sphere and send a ray from the hit point P to the random point S (i.e. S - P)
+- Gamma Correction for Accurate Color Intensity
+    - Image viewers assume that the image is "gamma corrected" (the 0 to 1 values have some transform before being stored as a byte)
+- Shadow Acne problem: some reflected rays hit the object at t = -0.00001 or t = 0.00001 (floating point approx)
+    - Ignore hits very near 0
+- True Lambertian Reflection
+    - Our current distribution picks directions with high probability close to the normal and low of scattering rays at grazing angles
+    - We want a distribution of cos(theta) rather than cos^3(theta)
+    - Pick random points on the surface of the unit sphere, offset along the surface normal
+    - Diffuse objects appear lighter because more light bounces towards the camera
+    - For the shadows, less light bounces straight up so the parts of the larger sphere directly underneath the smaller sphere are brighter.
+
+Metal 
+- Abstract base class:
+    - Produce a scattered ray (or say it absorbed the incident ray)
+    - If scattered, say how much the ray should be attenuated
+- Lambertian case:
+    - Either scatter always and attenuate by its reflectance R, or it can scatter with no attenuation but absorb 1 - R of the rays
+- Metal case:
+    - Reflects rays in the direction of v + 2b, where b = dot(v, n)
+- Fuzzy reflection:
+    - Randomize the reflected direction by using a small sphere and choosing a new endpoint for the ray
+
+Dielectrics
+- Refraction --> Snell's law 
+- Total internal refraction (when the ray is in the material with the higher refractive index, Snell's law has no real solutions)
+    - We have to reflect the ray instead
+- Schlick Approximation --> simulate real glass, which has reflectivity that varies with angle
+
+Camera
+- Need a way to specify the roll / sideways-tilt of the camera
+    - Specify an "up" vector for the camera --> should lie in the plane orthogonal to the view direction
+
+Defocus blur
+- Lens --> all light rays coming from a specific point at the focus distance - and that hit the lens - will be bent back to a single point on the image sensor
+Thin lens Approximation
+- Start rays from the lens, and send them towards the focus plane
+- Generate random scene rays originating from inside a disk centered at the lookfrom point 
+- The larger the radius, the greater the defocus blur 
+
 Terminology
 - focal length: distance between the projection plane and the projection point
+- lookfrom: where we place the camera
+- lookat: the point we look a
+- focus distance: distance between projection point and the plane where everything is in perfect focus
+- aperture: control how big the lens is effectively
