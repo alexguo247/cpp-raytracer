@@ -1,3 +1,5 @@
+Raytracer based off of `https://raytracing.github.io/`. Includes support for different materials such as matte, metal, and dielectrics. Also includes camera features such as changing FOV, defocus blur, and moving the ray origin.
+
 Usage:
 
 `./main > image.ppm` 
